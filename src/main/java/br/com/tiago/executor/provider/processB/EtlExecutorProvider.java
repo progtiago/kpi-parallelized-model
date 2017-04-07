@@ -4,10 +4,10 @@ import br.com.tiago.executor.EtlExecutor;
 import org.springframework.stereotype.Service;
 
 @Service("EtlExecutorProviderB")
-public class EtlExecutorProvider implements EtlExecutor {
+public class EtlExecutorProvider extends EtlExecutor {
 
     @Override
-    public void execute() {
+    protected void process() {
         System.out.println("EtlExecutorProvider for Process B.");
     }
 }

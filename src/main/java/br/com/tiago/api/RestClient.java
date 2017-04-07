@@ -15,7 +15,7 @@ public class RestClient {
 
     @RequestMapping(method = RequestMethod.POST)
     public void generate() {
-        metricsServiceProvider.process();
+        metricsServiceProvider.processQueueLike();
     }
 
 

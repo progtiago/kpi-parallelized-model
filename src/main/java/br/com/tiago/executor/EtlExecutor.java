@@ -1,7 +1,11 @@
 package br.com.tiago.executor;
 
-public interface EtlExecutor {
+public abstract class EtlExecutor implements Executor{
 
-    void execute();
+    public void execute() {
+        process();
+    }
+
+    protected abstract void process();
 
 }

@@ -1,7 +1,11 @@
 package br.com.tiago.executor;
 
-public interface MetricExecutor {
+public abstract class MetricExecutor implements Executor {
 
-    void execute();
+    public void execute() {
+        process();
+    }
+
+    protected abstract void process();
 
 }

@@ -1,7 +1,11 @@
 package br.com.tiago.executor;
 
-public interface ReportExecutor {
+public abstract class ReportExecutor implements Executor {
 
-    void execute();
+    public void execute() {
+        process();
+    }
+
+    protected abstract void process();
 
 }
