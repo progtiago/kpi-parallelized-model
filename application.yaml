@@ -1,0 +1,6 @@
+spring:
+  rabbitmq:
+    addresses: localhost
+    username: kpi
+    password: kpi
+    virtual-host: metrics
