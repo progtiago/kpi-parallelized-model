@@ -3,4 +3,4 @@ spring:
     addresses: localhost
     username: kpi
     password: kpi
-    virtual-host: metrics
+    virtual-host: kpi
