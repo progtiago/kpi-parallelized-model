@@ -6,7 +6,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import br.com.tiago.config.RabbitMqConfiguration;
 
 @SpringBootApplication
-public class KpiModelApplication {
+public class Application {
 
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(RabbitMqConfiguration.class).run(args);
