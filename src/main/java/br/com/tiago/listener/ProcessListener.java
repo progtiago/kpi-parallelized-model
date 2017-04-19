@@ -1,6 +1,6 @@
 package br.com.tiago.listener;
 
-import br.com.tiago.ApplicationContextProvider;
+import br.com.tiago.config.ApplicationContextProvider;
 import br.com.tiago.executor.Executor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;

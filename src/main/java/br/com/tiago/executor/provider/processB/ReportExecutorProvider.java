@@ -3,7 +3,9 @@ package br.com.tiago.executor.provider.processB;
 import br.com.tiago.executor.ReportExecutor;
 import org.springframework.stereotype.Service;
 
-@Service("ReportExecutorProviderB")
+import static br.com.tiago.executor.ProcessConstants.REPORT_EXECUTOR_PROVIDER_B;
+
+@Service(REPORT_EXECUTOR_PROVIDER_B)
 public class ReportExecutorProvider extends ReportExecutor {
 
     @Override
