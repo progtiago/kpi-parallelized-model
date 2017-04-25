@@ -17,26 +17,11 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfiguration {
 
     public final static String EXCHANGE_NAME = "processor-exchange";
-    public final static String ETL_QUEUE_NAME = "etl-queue";
-    public final static String METRIC_QUEUE_NAME = "metric-queue";
-    public final static String REPORT_QUEUE_NAME = "report-queue";
-    public final static String ROUTING_KEY_ETL = "event.etl";
-    public final static String ROUTING_KEY_METRIC = "event.metric";
-    public final static String ROUTING_KEY_REPORT = "event.report";
+    public final static String EXECUTOR_QUEUE_NAME = "executor-queue";
 
     @Bean
-    Queue etlQueue() {
-        return new Queue(ETL_QUEUE_NAME, false);
-    }
-
-    @Bean
-    Queue metricQueue() {
-        return new Queue(METRIC_QUEUE_NAME, false);
-    }
-
-    @Bean
-    Queue reportQueue() {
-        return new Queue(REPORT_QUEUE_NAME, false);
+    Queue executorQueue() {
+        return new Queue(EXECUTOR_QUEUE_NAME, false);
     }
 
     @Bean
@@ -45,17 +30,8 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    Binding bindingEtlQueue(Queue metricQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(metricQueue).to(exchange).with(ROUTING_KEY_ETL);
+    Binding bindingExecutorQueue(Queue metricQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(metricQueue).to(exchange).with("*");
     }
 
-    @Bean
-    Binding bindingMetricQueue(Queue metricQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(metricQueue).to(exchange).with(ROUTING_KEY_METRIC);
-    }
-
-    @Bean
-    Binding bindingReportQueue(Queue reportQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(reportQueue).to(exchange).with(ROUTING_KEY_REPORT);
-    }
 }
