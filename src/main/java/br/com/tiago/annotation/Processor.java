@@ -15,5 +15,6 @@ public @interface Processor {
 
     int sequence() default 0;
     String value() default "";
+    String[] blockError() default {};
 
 }
