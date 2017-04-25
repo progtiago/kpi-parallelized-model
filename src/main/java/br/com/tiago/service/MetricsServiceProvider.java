@@ -1,10 +1,15 @@
 package br.com.tiago.service;
 
-import br.com.tiago.executor.ProcessConstants;
+import br.com.tiago.executor.EtlExecutor;
+import br.com.tiago.executor.Executor;
+import br.com.tiago.executor.MetricExecutor;
+import br.com.tiago.executor.ReportExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static br.com.tiago.config.RabbitMqConfiguration.*;
 import static br.com.tiago.executor.ProcessConstants.*;
@@ -16,33 +21,10 @@ public class MetricsServiceProvider {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private List<Executor> executors;
+
     public void initProcess() {
-        initProcessEtl();
-        initiProcessMetrics();
-        initProcessReports();
-    }
-
-    private void initProcessEtl() {
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_ETL, ETL_EXECUTOR_PROVIDER_A);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_ETL, ETL_EXECUTOR_PROVIDER_B);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_ETL, ETL_EXECUTOR_PROVIDER_C);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_ETL, ETL_EXECUTOR_PROVIDER_D);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_ETL, ETL_EXECUTOR_PROVIDER_E);
-    }
-
-    private void initiProcessMetrics() {
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_METRIC, METRIC_EXECUTOR_PROVIDER_A);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_METRIC, METRIC_EXECUTOR_PROVIDER_B);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_METRIC, METRIC_EXECUTOR_PROVIDER_C);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_METRIC, METRIC_EXECUTOR_PROVIDER_D);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_METRIC, METRIC_EXECUTOR_PROVIDER_E);
-    }
-
-    private void initProcessReports() {
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_REPORT, REPORT_EXECUTOR_PROVIDER_A);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_REPORT, REPORT_EXECUTOR_PROVIDER_B);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_REPORT, REPORT_EXECUTOR_PROVIDER_C);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_REPORT, REPORT_EXECUTOR_PROVIDER_D);
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY_REPORT, REPORT_EXECUTOR_PROVIDER_E);
+        executors.forEach(Executor::register);
     }
 }

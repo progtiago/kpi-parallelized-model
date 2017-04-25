@@ -4,3 +4,5 @@ spring:
     username: kpi
     password: kpi
     virtual-host: kpi
+metrics:
+  exchange: processor-exchange

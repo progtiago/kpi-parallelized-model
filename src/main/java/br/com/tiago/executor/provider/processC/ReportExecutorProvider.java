@@ -5,7 +5,7 @@ import static br.com.tiago.executor.ProcessConstants.REPORT_EXECUTOR_PROVIDER_C;
 import br.com.tiago.annotation.Processor;
 import br.com.tiago.executor.ReportExecutor;
 
-@Processor(sequence = 0, value = REPORT_EXECUTOR_PROVIDER_C)
+@Processor(sequence = 2, value = REPORT_EXECUTOR_PROVIDER_C)
 public class ReportExecutorProvider extends ReportExecutor {
 
     @Override
