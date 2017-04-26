@@ -45,8 +45,13 @@ public class StatusRepository {
     public void save(final ProcessData processData, StatusEnum status) {
         String keyName = String.format(KEY_NAME, processData.getName(), processData.getSequence());
         String keyStatus = String.format(KEY_STATUS, processData.getName(), processData.getSequence());
+
+        template.delete(keyName);
+        template.delete(keyStatus);
+
         valueOps.set(keyName, processData.getName());
         valueOps.set(keyStatus, status.name());
+
         defineFirstSequence(processData.getSequence());
     }
 
