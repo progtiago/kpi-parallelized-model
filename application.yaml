@@ -6,3 +6,6 @@ spring:
     virtual-host: kpi
 metrics:
   exchange: processor-exchange
+  redis:
+    host: localhost
+    port: 6379
