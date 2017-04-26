@@ -9,15 +9,14 @@ public abstract class AbstractExecutor implements Executor {
     @Autowired
     private AsyncExecutor asyncExecutor;
 
-    @Autowired
-    private StatusExecutorService statusExecutorService;
-
     @Override
     public void finalize() {
+        asyncExecutor.finalize(this);
     }
 
     public void execute() {
         process();
+        finalize();
     }
 
     protected abstract void process();

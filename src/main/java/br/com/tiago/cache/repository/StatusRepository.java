@@ -3,9 +3,13 @@ package br.com.tiago.cache.repository;
 import static br.com.tiago.cache.StatusEnum.SUCESS;
 import static br.com.tiago.cache.StatusEnum.WAIT;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -42,13 +46,14 @@ public class StatusRepository {
         String keyName = String.format(KEY_NAME, processData.getName(), processData.getSequence());
         String keyStatus = String.format(KEY_STATUS, processData.getName(), processData.getSequence());
         valueOps.set(keyName, processData.getName());
-        valueOps.set(keyStatus, status);
+        valueOps.set(keyStatus, status.name());
         defineFirstSequence(processData.getSequence());
     }
 
     public List<ProcessData> findSequence(final Integer sequence) {
-        String key = String.format(KEY_NAME, ALL, sequence);
-        List<String> processors = (List)valueOps.get(key);
+        String pattern = String.format(KEY_NAME, ALL, sequence);
+        Set<String> keys = template.keys(pattern);
+        List<String> processors = keys.stream().map(key -> (String)valueOps.get(key)).collect(Collectors.toList());
         return processors.stream().map(name -> new ProcessData(sequence, name)).collect(toList());
     }
 
@@ -62,18 +67,19 @@ public class StatusRepository {
 
     public Boolean isReady(final ProcessData processData) {
         String keyStatus = String.format(KEY_STATUS,  processData.getName(), processData.getSequence());
-        StatusEnum status = (StatusEnum) valueOps.get(keyStatus);
+        String status = (String) valueOps.get(keyStatus);
         return SUCESS.name().equals(status);
     }
 
     public Integer getFirstSequence() {
-        return (Integer) valueOps.get(KEY_FIRST_SEQUENCE);
+        String strFirstSequence = (String) valueOps.get(KEY_FIRST_SEQUENCE);
+        return nonNull(strFirstSequence) ? Integer.valueOf(strFirstSequence) : null;
     }
 
     private void defineFirstSequence(final Integer sequence) {
-        Integer savedFirstSequence = (Integer) valueOps.get(KEY_FIRST_SEQUENCE);
+        Integer savedFirstSequence = getFirstSequence();
         if(isNull(savedFirstSequence) || savedFirstSequence > sequence) {
-            valueOps.set(KEY_FIRST_SEQUENCE, sequence);
+            valueOps.set(KEY_FIRST_SEQUENCE, String.valueOf(sequence));
         }
     }
 }

@@ -30,8 +30,8 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    Binding bindingExecutorQueue(Queue metricQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(metricQueue).to(exchange).with("*");
+    Binding bindingExecutorQueue(Queue executorQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(executorQueue).to(exchange).with("");
     }
 
 }

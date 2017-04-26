@@ -21,8 +21,12 @@ public class AsyncExecutor {
 
     public void schedule(final Executor executor) {
         ProcessData processData = new ProcessData(executor);
-
         sendRedis(processData);
+    }
+
+    public void finalize(final Executor executor) {
+        ProcessData processData = new ProcessData(executor);
+        statusExecutorService.finalize(processData);
     }
 
     public void start() {
