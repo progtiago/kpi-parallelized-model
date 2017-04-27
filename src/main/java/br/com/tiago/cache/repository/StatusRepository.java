@@ -62,14 +62,6 @@ public class StatusRepository {
         return processors.stream().map(name -> new ProcessData(sequence, name)).collect(toList());
     }
 
-    public List<ProcessData> findPreviousSequence(final Integer sequence) {
-        return findSequence(sequence - 1);
-    }
-
-    public List<ProcessData> findPosteriorSequence(final Integer sequence) {
-        return findSequence(sequence + 1);
-    }
-
     public Boolean isReady(final ProcessData processData) {
         String keyStatus = String.format(KEY_STATUS,  processData.getName(), processData.getSequence());
         String status = (String) valueOps.get(keyStatus);

@@ -14,9 +14,6 @@ import java.util.List;
 public class MetricsServiceProvider {
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
-
-    @Autowired
     private List<Executor> executors;
 
     @Autowired

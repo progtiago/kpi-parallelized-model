@@ -1,5 +1,7 @@
 package br.com.tiago.executor;
 
+import java.util.List;
+
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +18,11 @@ public class AsyncExecutor {
     @Autowired
     private StatusExecutorService statusExecutorService;
 
-    @Value("${metrics.exchange}")
-    private String exchange;
+    @Value("${metrics.start.exchange}")
+    private String processorExchange;
+
+    @Value("${metrics.finalize.exchange}")
+    private String completedExchange;
 
     public void schedule(final Executor executor) {
         ProcessData processData = new ProcessData(executor);
@@ -26,19 +31,29 @@ public class AsyncExecutor {
 
     public void finalize(final Executor executor) {
         ProcessData processData = new ProcessData(executor);
-        statusExecutorService.finalize(processData);
+        sendFinalizeMessageToRabbit(processData);
     }
 
     public void start() {
-       statusExecutorService.getFirstSequence().forEach(this :: sendRabbit);
+       statusExecutorService.getFirstSequence().forEach(this ::sendStartMessageToRabbit);
+    }
+
+    public void start(final Integer sequence) {
+        List<ProcessData> processes = statusExecutorService.getSequence(sequence);
+        if(processes != null && !processes.isEmpty()) {
+            processes.forEach(this ::sendStartMessageToRabbit);
+        }
     }
 
     private void sendRedis(final ProcessData processData) {
         statusExecutorService.register(processData);
     }
 
-    private void sendRabbit(final ProcessData processData) {
-        rabbitTemplate.convertAndSend(exchange, null, processData.getName());
+    private void sendStartMessageToRabbit(final ProcessData processData) {
+        rabbitTemplate.convertAndSend(processorExchange, null, processData.getName());
     }
 
+    private void sendFinalizeMessageToRabbit(final ProcessData processData) {
+        rabbitTemplate.convertAndSend(completedExchange, null, processData);
+    }
 }

@@ -5,7 +5,10 @@ spring:
     password: kpi
     virtual-host: kpi
 metrics:
-  exchange: processor-exchange
+  start:
+    exchange: processor-exchange
+  finalize:
+    exchange: completed-exchange
   redis:
     host: localhost
     port: 6379

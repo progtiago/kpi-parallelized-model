@@ -42,13 +42,28 @@ public class StatusExecutorServiceProvider implements StatusExecutorService {
         List<ProcessData> notCompleted =
                 processors.stream().filter(processData -> !statusRepository.isReady(processData)).collect(toList());
 
-        return !isEmpty(notCompleted);
+        return isEmpty(notCompleted);
     }
 
     @Override
     public List<ProcessData> getFirstSequence() {
         Integer firstSequence = statusRepository.getFirstSequence();
         return statusRepository.findSequence(firstSequence);
+    }
+
+    @Override
+    public List<ProcessData> getPreviousSequence(final Integer sequence) {
+        return statusRepository.findSequence(sequence - 1);
+    }
+
+    @Override
+    public List<ProcessData> getPosteriorSequence(final Integer sequence) {
+        return statusRepository.findSequence(sequence + 1);
+    }
+
+    @Override
+    public List<ProcessData> getSequence(final Integer sequence) {
+        return statusRepository.findSequence(sequence);
     }
 
 }

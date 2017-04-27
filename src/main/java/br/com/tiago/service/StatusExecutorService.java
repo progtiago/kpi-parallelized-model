@@ -14,4 +14,10 @@ public interface StatusExecutorService {
 
     List<ProcessData> getFirstSequence();
 
+    List<ProcessData> getSequence(final Integer sequence);
+
+    List<ProcessData> getPreviousSequence(final Integer sequence);
+
+    List<ProcessData> getPosteriorSequence(final Integer sequence);
+
 }
