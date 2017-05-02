@@ -1,6 +1,6 @@
 package br.com.tiago.listener;
 
-import br.com.tiago.ApplicationContextProvider;
+import br.com.tiago.config.ApplicationContextProvider;
 import br.com.tiago.executor.Executor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -10,11 +10,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-import static br.com.tiago.config.RabbitMqConfiguration.*;
+import static br.com.tiago.config.RabbitMqConfiguration.EXECUTOR_QUEUE_NAME;
 
 @Slf4j
 @Component
-@RabbitListener(queues = {ETL_QUEUE_NAME, METRIC_QUEUE_NAME, REPORT_QUEUE_NAME})
+@RabbitListener(queues = EXECUTOR_QUEUE_NAME)
 public class ProcessListener {
 
     @Autowired

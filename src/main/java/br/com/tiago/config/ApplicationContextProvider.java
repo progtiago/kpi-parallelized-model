@@ -1,4 +1,4 @@
-package br.com.tiago;
+package br.com.tiago.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

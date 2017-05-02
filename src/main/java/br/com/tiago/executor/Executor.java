@@ -4,4 +4,6 @@ public interface Executor {
 
     void execute();
 
+    void finalize();
+
 }

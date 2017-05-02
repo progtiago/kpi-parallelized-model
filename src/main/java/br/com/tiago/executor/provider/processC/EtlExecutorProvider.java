@@ -1,10 +1,12 @@
 package br.com.tiago.executor.provider.processC;
 
-import br.com.tiago.executor.EtlExecutor;
-import org.springframework.stereotype.Service;
+import static br.com.tiago.executor.ProcessConstants.ETL_EXECUTOR_PROVIDER_C;
 
-@Service("EtlExecutorProviderC")
-public class EtlExecutorProvider extends EtlExecutor {
+import br.com.tiago.annotation.Processor;
+import br.com.tiago.executor.AbstractExecutor;
+
+@Processor(sequence = 0, value = ETL_EXECUTOR_PROVIDER_C)
+public class EtlExecutorProvider extends AbstractExecutor {
 
     @Override
     protected void process() {

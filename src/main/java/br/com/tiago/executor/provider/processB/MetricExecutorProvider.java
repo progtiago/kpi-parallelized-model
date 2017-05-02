@@ -1,10 +1,12 @@
 package br.com.tiago.executor.provider.processB;
 
-import br.com.tiago.executor.MetricExecutor;
-import org.springframework.stereotype.Service;
+import static br.com.tiago.executor.ProcessConstants.METRIC_EXECUTOR_PROVIDER_B;
 
-@Service("MetricExecutorProviderB")
-public class MetricExecutorProvider extends MetricExecutor {
+import br.com.tiago.annotation.Processor;
+import br.com.tiago.executor.AbstractExecutor;
+
+@Processor(sequence = 1, value = METRIC_EXECUTOR_PROVIDER_B)
+public class MetricExecutorProvider extends AbstractExecutor {
 
     @Override
     protected void process() {
