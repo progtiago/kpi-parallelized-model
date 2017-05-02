@@ -1,22 +1,17 @@
 package br.com.tiago.service;
 
+import br.com.tiago.cache.StatusEnum;
+import br.com.tiago.cache.repository.StatusRepository;
+import br.com.tiago.executor.ProcessData;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 import static br.com.tiago.cache.StatusEnum.SUCESS;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.util.CollectionUtils.isEmpty;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import br.com.tiago.cache.StatusEnum;
-import br.com.tiago.cache.repository.StatusRepository;
-import br.com.tiago.executor.Executor;
-import br.com.tiago.executor.ProcessData;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -37,12 +32,29 @@ public class StatusExecutorServiceProvider implements StatusExecutorService {
         statusRepository.save(processData, SUCESS);
     }
 
-    public boolean canExecutePosteriorSequence(final Integer sequence) {
+    @Override
+    public boolean isSequenceCompleted(final Integer sequence) {
         List<ProcessData> processors = statusRepository.findSequence(sequence);
         List<ProcessData> notCompleted =
-                processors.stream().filter(processData -> !statusRepository.isReady(processData)).collect(toList());
+                processors.stream().filter(
+                        processData -> !isReady(processData)).collect(toList());
 
         return isEmpty(notCompleted);
+    }
+
+    @Override
+    public boolean isReady(final ProcessData processData) {
+        return StatusEnum.SUCESS.equals(statusRepository.getStatus(processData));
+    }
+
+    @Override
+    public boolean isRunning(final ProcessData processData) {
+        return StatusEnum.RUNNING.equals(statusRepository.getStatus(processData));
+    }
+
+    @Override
+    public void updateStatus(final ProcessData processData, final StatusEnum statusEnum) {
+        statusRepository.save(processData, statusEnum);
     }
 
     @Override

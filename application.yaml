@@ -7,8 +7,6 @@ spring:
 metrics:
   start:
     exchange: processor-exchange
-  finalize:
-    exchange: completed-exchange
   redis:
     host: localhost
     port: 6379

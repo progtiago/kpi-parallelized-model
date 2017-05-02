@@ -1,5 +1,6 @@
 package br.com.tiago.cache.repository;
 
+import static br.com.tiago.cache.StatusEnum.RUNNING;
 import static br.com.tiago.cache.StatusEnum.SUCESS;
 import static br.com.tiago.cache.StatusEnum.WAIT;
 import static java.util.Objects.isNull;
@@ -66,6 +67,12 @@ public class StatusRepository {
         String keyStatus = String.format(KEY_STATUS,  processData.getName(), processData.getSequence());
         String status = (String) valueOps.get(keyStatus);
         return SUCESS.name().equals(status);
+    }
+
+    public StatusEnum getStatus(final ProcessData processData) {
+        String keyStatus = String.format(KEY_STATUS,  processData.getName(), processData.getSequence());
+        String status = (String) valueOps.get(keyStatus);
+        return StatusEnum.valueOf(status);
     }
 
     public Integer getFirstSequence() {

@@ -10,11 +10,11 @@ public abstract class AbstractExecutor implements Executor {
     private AsyncExecutor asyncExecutor;
 
     @Override
-    public void finalize() {
+    public final void finalize() {
         asyncExecutor.finalize(this);
     }
 
-    public void execute() {
+    public final void execute() {
         process();
         finalize();
     }

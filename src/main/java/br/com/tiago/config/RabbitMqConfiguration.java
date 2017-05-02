@@ -22,18 +22,11 @@ import br.com.tiago.Application;
 public class RabbitMqConfiguration {
 
     public final static String PROCESSOR_EXCHANGE_NAME = "processor-exchange";
-    public final static String COMPLETED_EXCHANGE_NAME = "completed-exchange";
     public final static String EXECUTOR_QUEUE_NAME = "executor-queue";
-    public final static String COMPLETED_EXECUTOR_QUEUE_NAME = "completed-executor-queue";
 
     @Bean
     TopicExchange processorExchange() {
         return new TopicExchange(PROCESSOR_EXCHANGE_NAME);
-    }
-
-    @Bean
-    TopicExchange completedExchange() {
-        return new TopicExchange(COMPLETED_EXCHANGE_NAME);
     }
 
     @Bean
@@ -42,18 +35,8 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    Queue completedQueue() {
-        return new Queue(COMPLETED_EXECUTOR_QUEUE_NAME, false, true, false);
-    }
-
-    @Bean
     Binding bindingExecutorQueue(Queue executorQueue, TopicExchange processorExchange) {
         return BindingBuilder.bind(executorQueue).to(processorExchange).with("");
-    }
-
-    @Bean
-    Binding bindingCompletedQueue(Queue completedQueue, TopicExchange completedExchange) {
-        return BindingBuilder.bind(completedQueue).to(completedExchange).with("");
     }
 
     @Bean
